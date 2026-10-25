@@ -10,7 +10,10 @@ app.use(cors()); // للسماح لموقعك بالاتصال بالخادم
 // إعداد عميل الواتساب (يستخدم LocalAuth لحفظ الجلسة)
 const client = new Client({
     authStrategy: new LocalAuth(),
-    puppeteer: { args: ['--no-sandbox', '--disable-setuid-sandbox'] }
+    puppeteer: { 
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'] 
+    }
 });
 
 // توليد باركود للمسح عبر هاتف المدرسة
@@ -53,7 +56,7 @@ app.post('/api/send-sms', async (req, res) => {
     }
 });
 
-// تشغيل الخادم على المنفذ 3000
-app.listen(3000, () => {
-    console.log('🚀 خادم الواتساب يعمل الآن على http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 خادم الواتساب يعمل على المنفذ ${PORT}`);
 });
